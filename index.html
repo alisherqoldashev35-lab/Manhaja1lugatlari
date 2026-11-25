@@ -1,0 +1,1140 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Manhaj A1</title>
+  <style>
+    :root {
+      --bg: #040406;
+      --surface: #0d0f15;
+      --surface-2: #151823;
+      --border: rgba(255, 255, 255, 0.1);
+      --text: #f8fafc;
+      --muted: #94a3b8;
+      --green: #16a34a;
+      --green-bright: #22c55e;
+      --gold: #f59e0b;
+      --blue: #3b82f6;
+      --red: #ef4444;
+      --purple: #a855f7;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: "Inter", system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    .app {
+      max-width: 960px;
+      margin: 0 auto;
+      padding: 22px 16px 70px;
+    }
+
+    .topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+    }
+
+    .brand h1 {
+      font-size: 1.4rem;
+      letter-spacing: 0.2px;
+    }
+
+    .brand p {
+      color: var(--muted);
+      font-size: 0.88rem;
+    }
+
+    .controls-top {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    button {
+      border: none;
+      cursor: pointer;
+      border-radius: 12px;
+      font-weight: 600;
+      transition: transform 0.14s ease, opacity 0.14s ease, background 0.2s ease, border-color 0.2s ease;
+    }
+
+    button:active:not(:disabled) {
+      transform: scale(0.98);
+    }
+
+    button:disabled {
+      opacity: 0.48;
+      cursor: not-allowed;
+    }
+
+    .btn-ghost {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 9px 14px;
+      font-size: 0.9rem;
+    }
+
+    .btn-green {
+      background: linear-gradient(135deg, var(--green), var(--green-bright));
+      color: #fff;
+      padding: 13px 22px;
+      font-size: 1rem;
+      box-shadow: 0 8px 24px rgba(34, 197, 94, 0.25);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #2563eb, var(--blue));
+      color: #fff;
+      padding: 11px 18px;
+      font-size: 0.95rem;
+    }
+
+    .btn-gold {
+      background: linear-gradient(135deg, #d97706, var(--gold));
+      color: #09090b;
+      padding: 14px 22px;
+      font-size: 1rem;
+      font-weight: 700;
+    }
+
+    .wahda-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(215px, 1fr));
+      gap: 14px;
+    }
+
+    .wahda-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 18px;
+      text-align: left;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      min-height: 155px;
+    }
+
+    .wahda-card.unlocked:hover {
+      border-color: rgba(34, 197, 94, 0.6);
+      background: #12151f;
+    }
+
+    .wahda-card.locked {
+      opacity: 0.5;
+      background: #08090d;
+    }
+
+    .wahda-card.completed {
+      border-color: rgba(34, 197, 94, 0.45);
+    }
+
+    .wahda-num {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 3px;
+    }
+
+    .wahda-ar-title {
+      direction: rtl;
+      text-align: left;
+      color: #fbbf24;
+      font-size: 0.98rem;
+      margin-bottom: 3px;
+    }
+
+    .wahda-sub {
+      font-size: 0.84rem;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 0.78rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-weight: 600;
+      width: fit-content;
+    }
+
+    .badge-open {
+      background: rgba(59, 130, 246, 0.16);
+      color: #93c5fd;
+    }
+
+    .badge-done {
+      background: rgba(34, 197, 94, 0.16);
+      color: #86efac;
+    }
+
+    .badge-lock {
+      background: rgba(255, 255, 255, 0.06);
+      color: var(--muted);
+    }
+
+    .review-box {
+      margin-top: 28px;
+      background: linear-gradient(145deg, #17130a, #0e1018);
+      border: 1px solid rgba(245, 158, 11, 0.35);
+      border-radius: 18px;
+      padding: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 24px;
+    }
+
+    .progress-wrap {
+      margin-bottom: 18px;
+    }
+
+    .progress-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.86rem;
+      color: var(--muted);
+      margin-bottom: 7px;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .progress-track {
+      height: 8px;
+      background: var(--surface-2);
+      border-radius: 999px;
+      overflow: hidden;
+    }
+
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--blue), var(--green-bright));
+      transition: width 0.25s ease;
+    }
+
+    .word-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 10px 0 6px;
+    }
+
+    .kind-tag {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      color: #93c5fd;
+      background: rgba(59, 130, 246, 0.14);
+      padding: 4px 12px;
+      border-radius: 999px;
+      margin-bottom: 14px;
+    }
+
+    .visual-box {
+      width: 120px;
+      height: 120px;
+      border-radius: 22px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+    }
+
+    .arabic-word {
+      font-size: 2.5rem;
+      font-weight: 700;
+      direction: rtl;
+      margin-bottom: 8px;
+      color: #ffffff;
+    }
+
+    .meaning-uz {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #fbbf24;
+      margin-bottom: 20px;
+    }
+
+    .study-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+    }
+
+    .quiz-type-badge {
+      display: inline-block;
+      font-size: 0.8rem;
+      padding: 4px 12px;
+      border-radius: 999px;
+      background: rgba(168, 85, 247, 0.16);
+      color: #d8b4fe;
+      margin-bottom: 12px;
+    }
+
+    .quiz-prompt {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .quiz-prompt.ar-big {
+      font-size: 2.3rem;
+      direction: rtl;
+    }
+
+    .options-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .opt-btn {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 14px;
+      font-size: 1rem;
+      text-align: center;
+    }
+
+    .opt-btn.correct {
+      background: rgba(34, 197, 94, 0.22);
+      border-color: var(--green-bright);
+      color: #bbf7d0;
+    }
+
+    .opt-btn.wrong {
+      background: rgba(239, 68, 68, 0.22);
+      border-color: var(--red);
+      color: #fecaca;
+    }
+
+    .text-input {
+      width: 100%;
+      max-width: 440px;
+      background: var(--surface-2);
+      color: #fff;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 13px 16px;
+      font-size: 1.3rem;
+      direction: rtl;
+      margin-bottom: 12px;
+    }
+
+    .match-board {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .match-col {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .match-item {
+      background: var(--surface-2);
+      color: var(--text);
+      border: 1px solid var(--border);
+      padding: 13px;
+      border-radius: 12px;
+      font-size: 1rem;
+    }
+
+    .match-item.selected {
+      border-color: var(--blue);
+      background: rgba(59, 130, 246, 0.2);
+    }
+
+    .match-item.matched {
+      border-color: var(--green-bright);
+      background: rgba(34, 197, 94, 0.16);
+      color: #86efac;
+    }
+
+    .feedback {
+      margin-top: 16px;
+      padding: 12px 16px;
+      border-radius: 12px;
+      font-weight: 600;
+    }
+
+    .feedback.ok {
+      background: rgba(34, 197, 94, 0.16);
+      color: #86efac;
+      border: 1px solid rgba(34, 197, 94, 0.35);
+    }
+
+    .feedback.err {
+      background: rgba(239, 68, 68, 0.16);
+      color: #fca5a5;
+      border: 1px solid rgba(239, 68, 68, 0.35);
+    }
+
+    .result-box {
+      text-align: center;
+      padding: 18px 8px;
+    }
+
+    .score-big {
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 10px 0;
+    }
+
+    @media (max-width: 600px) {
+      .match-board {
+        grid-template-columns: 1fr;
+      }
+      .arabic-word {
+        font-size: 2.1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="app" id="app"></div>
+
+  <script>
+    const Sound = (() => {
+      let ctx = null;
+      let enabled = true;
+
+      function ensureCtx() {
+        if (!ctx) {
+          const AudioCtx = window.AudioContext || window.webkitAudioContext;
+          if (AudioCtx) ctx = new AudioCtx();
+        }
+        if (ctx && ctx.state === "suspended") ctx.resume();
+        return ctx;
+      }
+
+      function tone(freq, duration = 0.13, type = "sine", delay = 0, gainVal = 0.11) {
+        if (!enabled) return;
+        const c = ensureCtx();
+        if (!c) return;
+        const now = c.currentTime + delay;
+        const osc = c.createOscillator();
+        const gain = c.createGain();
+        osc.type = type;
+        osc.frequency.setValueAtTime(freq, now);
+        gain.gain.setValueAtTime(gainVal, now);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + duration);
+        osc.connect(gain);
+        gain.connect(c.destination);
+        osc.start(now);
+        osc.stop(now + duration);
+      }
+
+      return {
+        isEnabled: () => enabled,
+        toggle: () => { enabled = !enabled; return enabled; },
+        click: () => tone(520, 0.06, "triangle", 0, 0.08),
+        learned: () => {
+          tone(523.25, 0.1, "sine", 0, 0.12);
+          tone(659.25, 0.14, "sine", 0.09, 0.12);
+        },
+        correct: () => {
+          tone(587.33, 0.1, "triangle", 0, 0.13);
+          tone(880, 0.18, "triangle", 0.08, 0.13);
+        },
+        wrong: () => {
+          tone(220, 0.16, "sawtooth", 0, 0.1);
+          tone(175, 0.22, "sawtooth", 0.12, 0.1);
+        },
+        unlock: () => {
+          [523.25, 659.25, 783.99, 1046.5].forEach((f, idx) => tone(f, 0.14, "triangle", idx * 0.08, 0.12));
+        }
+      };
+    })();
+
+    function getVisualSvg(wahdaId, kind) {
+      const palette = [
+        "#3b82f6", "#22c55e", "#f59e0b", "#a855f7",
+        "#ec4899", "#06b6d4", "#eab308", "#10b981",
+        "#f97316", "#ef4444", "#8b5cf6", "#14b8a6"
+      ];
+      const color = palette[(wahdaId - 1) % palette.length];
+      if (kind === "Ibora / Tarkib") {
+        return `<svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+          <rect x="10" y="14" width="44" height="28" rx="9" fill="${color}" fill-opacity="0.24" stroke="${color}" stroke-width="2.5"/>
+          <polygon points="22,42 31,42 20,52" fill="${color}"/>
+          <circle cx="23" cy="28" r="2.5" fill="#fff"/>
+          <circle cx="32" cy="28" r="2.5" fill="#fff"/>
+          <circle cx="41" cy="28" r="2.5" fill="#fff"/>
+        </svg>`;
+      }
+      return `<svg width="64" height="64" viewBox="0 0 64 64" fill="none">
+        <path d="M12 16c7-2 14 0 20 5 6-5 13-7 20-5v30c-7-2-14 0-20 5-6-5-13-7-20-5V16z" fill="${color}" fill-opacity="0.28" stroke="${color}" stroke-width="2.5"/>
+        <line x1="32" y1="21" x2="32" y2="51" stroke="#fff" stroke-width="2"/>
+      </svg>`;
+    }
+
+    const RAW_WAHDAS = [
+      {
+        id: 1,
+        title: "1-vahda",
+        arTitle: "التَّحِيَّةُ وَالتَّعَارُفُ",
+        subtitle: "Salomlashish va tanishish",
+        vocab: [
+          ["مَرْحَبًا", "Marhamat, salom (xush kelibsiz)"],
+          ["طَالِبَةٌ", "Talaba (qiz)"],
+          ["مُعَلِّمَةٌ", "O‘qituvchi (ayol)"],
+          ["مُدِيرٌ", "Direktor, boshqaruvchi"],
+          ["طَبِيبٌ", "Shifokor, doktor"],
+          ["جَامِعَةٌ", "Universitet"],
+          ["مَدِينَةٌ", "Shahar"],
+          ["أَعْمَلُ", "Ishlayman"],
+          ["مَدْرَسَةٌ", "Maktab"],
+          ["صَدِيقٌ", "Do‘st"]
+        ],
+        phrases: [
+          ["كَيْفَ حَالُكَ؟", "Qalaysiz? Ahvolingiz qanday?"],
+          ["سَعِيدٌ بِلِقَائِكَ", "Tanishganimdan xursandman"],
+          ["أَهْلًا وَسَهْلًا", "Xush kelibsiz"],
+          ["إِلَى اللِّقَاءِ", "Ko‘rishguncha"],
+          ["مَعَ السَّلَامَةِ", "Xayr, omon bo‘ling"],
+          ["بِخَيْرٍ", "Yaxshi, sog‘-salomat"]
+        ]
+      },
+      {
+        id: 2,
+        title: "2-vahda",
+        arTitle: "الْأُسْرَةُ وَالْعَائِلَةُ",
+        subtitle: "Oila va qarindoshlar",
+        vocab: [
+          ["تَوْأَمٌ", "Egizak"],
+          ["مُتَقَاعِدٌ", "Pensioner, nafaqaxo‘r"],
+          ["سَمِينٌ", "Semiz, to‘la"],
+          ["يَعْمَلُ", "Ishlaydi"],
+          ["مُبْتَسِمٌ", "Tabassum qilayotgan"],
+          ["قَوِيٌّ", "Kuchli"],
+          ["ذَكِيٌّ", "Aqlli, zukko"],
+          ["مُجْتَهِدٌ", "Tirishqoq, harakatchan"],
+          ["شُرْطِيٌّ", "Militsioner, politsiya xodimi"],
+          ["مَرِحٌ", "Quvnoq, hazilkash"],
+          ["كَرِيمٌ", "Saxiy, mehribon"],
+          ["لَطِيفٌ", "Yoqimli, muloyim"],
+          ["مُمَرِّضَةٌ", "Hamshira"],
+          ["حَنُونَةٌ", "Mehribon, shafqatli (ayol)"],
+          ["مُتَزَوِّجٌ", "Uylangan, turmush qurgan"],
+          ["يَدْرُسُ", "O‘qiydi"],
+          ["زِيَارَةٌ", "Tashrif, ziyorat"],
+          ["طَبَّاخٌ", "Oshpaz"],
+          ["الْأَوْسَطُ", "O‘rta(cha), o‘rtancha"],
+          ["يُشْبِهُ", "O‘xshaydi"],
+          ["تَاجِرٌ", "Savdogar, tijoratchi"]
+        ],
+        phrases: [
+          ["كُلُّ أُسْبُوعٍ", "Har hafta"],
+          ["تَتَكَوَّنُ مِنْ", "...dan iborat bo‘ladi"],
+          ["بَارَكَ اللَّهُ فِيكَ", "Alloh senga barakali qilsin"],
+          ["أَفْرَادُ الْعَائِلَةِ", "Oila a’zolari"]
+        ]
+      },
+      {
+        id: 3,
+        title: "3-vahda",
+        arTitle: "الدِّرَاسَةُ وَالتَّعْلِيمُ",
+        subtitle: "O‘qish va ta’lim",
+        vocab: [
+          ["صَفٌّ", "Sinf, dars xonasi"],
+          ["نَشِيطٌ", "Faol, jonli"],
+          ["يَقْرَأُ", "O‘qiydi"],
+          ["مَكْتَبَةٌ", "Kutubxona"],
+          ["ذَكِيٌّ", "Aqlli, zukko"],
+          ["يَدْرُسُ", "O‘qiydi, dars qiladi"],
+          ["مَدْرَسَةٌ", "Maktab"],
+          ["كَسْلَانُ", "Yalqov, dangasa"],
+          ["مُعْجَمٌ", "Lug‘at (kitob)"],
+          ["كُلِّيَّةٌ", "Fakultet"],
+          ["مَوْعِدٌ", "Uchrashuv vaqti, muddat"],
+          ["مَقْصَفٌ", "Oshxona, bufet (maktab/universitet)"],
+          ["جَامِعَةٌ", "Universitet"],
+          ["قَلِقٌ", "Xavotirli, tashvishli"],
+          ["يَنْتَهِي", "Tugaydi, yakunlanadi"],
+          ["مَعْهَدُ اللُّغَاتِ", "Tillar instituti"],
+          ["امْتِحَانٌ", "Imtihon"],
+          ["يَبْدَأُ", "Boshlaydi, boshlanadi"]
+        ],
+        phrases: [
+          ["دَرَجَةٌ عَالِيَةٌ", "Yuqori daraja, baho"],
+          ["أَيَّامُ الْأُسْبُوعِ", "Hafta kunlari"],
+          ["وَقْتُ الِاسْتِرَاحَةِ", "Dam olish vaqti, tanaffus"],
+          ["حَصَلَ عَلَى", "...ga ega bo‘ldi, erishdi"],
+          ["بِالتَّوْفِيقِ", "Omad bilan, muvaffaqiyat tilaymiz"],
+          ["أَحْيَانًا", "Ba’zan"]
+        ]
+      },
+      {
+        id: 4,
+        title: "4-vahda",
+        arTitle: "الْمِهَنُ وَالْأَعْمَالُ",
+        subtitle: "Kasblar va ishlar",
+        vocab: [
+          ["مُوَظَّفٌ", "Xodim, ishchi"],
+          ["أَرْضٌ", "Yer, dala"],
+          ["عُطْلَةٌ", "Dam olish kuni, ta’til"],
+          ["فَلَّاحٌ", "Dehqon"],
+          ["حَلَّاقٌ", "Sartarosh"],
+          ["شَرِكَةٌ", "Kompaniya, shirkat"],
+          ["دُكَّانٌ", "Do‘kon"],
+          ["صَعْبٌ × سَهْلٌ", "Qiyin × Oson"],
+          ["فُنْدُقٌ", "Mehmonxona"],
+          ["رَاتِبٌ", "Maosh, oylik"],
+          ["أَزُورُ", "Tashrif buyuraman, ziyorat qilaman"],
+          ["كَثِيرٌ × قَلِيلٌ", "Ko‘p × Kam"],
+          ["أَزْرَعُ", "Ekaman, ekin ekaman"],
+          ["أَقِفُ", "To‘xtayman, turaman"],
+          ["أَرْكَبُ", "Minaman, chiqaman (transportga)"],
+          ["يَبْدَأُ × يَنْتَهِي", "Boshlanadi × Tugaydi"],
+          ["أَسْتَيْقِظُ", "Uyg‘onaman"],
+          ["أَعْمَلُ", "Ishlayman"],
+          ["أُسَافِرُ", "Sayohat qilaman, safar qilaman"],
+          ["حُكُومِيٌّ × خَاصٌّ", "Davlat × Xususiy"]
+        ],
+        phrases: [
+          ["طَوَالَ الْوَقْتِ", "Butun vaqt davomida"],
+          ["كَمْ سَاعَةً تَعْمَلُ؟", "Necha soat ishlaysiz?"],
+          ["غُرُوبُ الشَّمْسِ", "Quyosh botishi"],
+          ["يَسَّرَ اللَّهُ لَكَ", "Alloh senga oson qilsin"]
+        ]
+      },
+      {
+        id: 5,
+        title: "5-vahda",
+        arTitle: "السَّكَنُ",
+        subtitle: "Turar joy",
+        vocab: [
+          ["طَابِقٌ", "Qavat"],
+          ["أَرِيكَةٌ", "Divan, kursi"],
+          ["هَادِئٌ", "Tinch, osoyishta"],
+          ["أَنْتَظِرُ", "Kutaman"],
+          ["حَيٌّ", "Mahalla, hovli"],
+          ["إِيجَارٌ", "Ijara"],
+          ["وَاسِعٌ", "Keng"],
+          ["يَرِنُّ", "Jiringlaydi (qo‘ng‘iroq, telefon)"],
+          ["مِصْعَدٌ", "Lift"],
+          ["جَارٌ", "Qo‘shni"],
+          ["ضُيُوفٌ", "Mehmonlar"],
+          ["أَسْكُنُ", "Yashayman, istiqomat qilaman"],
+          ["شُرْفَةٌ", "Balkon"],
+          ["جَاهِزٌ", "Tayyor"],
+          ["خِزَانَةٌ", "Shkaf, javon"],
+          ["أَعْجَبَنِي", "Menga ma’qul keldi, yoqdi"],
+          ["خَدَمَاتٌ", "Xizmatlar"],
+          ["نَافِذَةٌ", "Deraza"],
+          ["صَالَةٌ", "Mehmonxona, zal"],
+          ["غُرْفَةٌ", "Xona"],
+          ["أَثَاثٌ", "Mebel, jihoz"],
+          ["زَوْجٌ", "Er"],
+          ["زَوْجَةٌ", "Xotin"],
+          ["مُزْدَحِمٌ", "Tirband, gavjum"]
+        ],
+        phrases: [
+          ["تَقَعُ فِي", "...da joylashgan"],
+          ["شُقَّةٌ مَفْرُوشَةٌ", "Jihozlangan kvartira"],
+          ["أَجْهِزَةٌ كَهْرَبَائِيَّةٌ", "Elektr jihozlari"],
+          ["أَدَوَاتُ الْمَطْبَخِ", "Oshxona jihozlari"],
+          ["تُطِلُّ عَلَى", "...ga qaraydi, manzarasi ochiladi"],
+          ["قَرِيبٌ مِنْ", "...ga yaqin"],
+          ["خَاصَّةٌ بِـ", "...ga tegishli, xos"],
+          ["بِكُلِّ سُرُورٍ", "Mamnuniyat bilan"]
+        ]
+      },
+      {
+        id: 6,
+        title: "6-vahda",
+        arTitle: "الْأَمَاكِنُ وَالْجَوُّ",
+        subtitle: "Joylar va ob-havo",
+        vocab: [
+          ["مُعْتَدِلٌ", "Mo‘tadil, o‘rtacha (ob-havo)"],
+          ["بِجَانِبِ", "Yonida, yonboshida"],
+          ["شَرْقٌ × غَرْبٌ", "Sharq × G‘arb"],
+          ["مُمْطِرٌ", "Yomg‘irli"],
+          ["مُزْدَحِمٌ", "Tirband, gavjum"],
+          ["شَمَالٌ × جَنُوبٌ", "Shimol × Janub"],
+          ["غَائِمٌ", "Bulutli"],
+          ["اتِّجَاهٌ", "Yo‘nalish, tomon"],
+          ["يَمِينٌ × يَسَارٌ", "O‘ng × Chap"],
+          ["مُشْمِسٌ", "Quyoshli"],
+          ["يَتَسَاقَطُ", "Yog‘adi, to‘kiladi (qor, yomg‘ir)"],
+          ["مُرْتَفِعٌ × مُنْخَفِضٌ", "Yuqori × Past"],
+          ["مَنْظَرٌ", "Manzara, ko‘rinish"],
+          ["احْتِمَالٌ", "Ehtimol"],
+          ["خَفِيفَةٌ × شَدِيدَةٌ", "Yengil × Kuchli"],
+          ["عَاصِمَةٌ", "Poytaxt"],
+          ["حَارٌّ × بَارِدٌ", "Issiq × Sovuq"],
+          ["نَهَارًا × لَيْلًا", "Kunduzi × Kechasi"]
+        ],
+        phrases: [
+          ["أَوْرَاقُ الشَّجَرِ", "Daraxt barglari"],
+          ["إِشَارَاتُ الْمُرُورِ", "Yo‘l harakati belgilari"],
+          ["مَوْقِفُ السَّيَّارَاتِ", "Avtomobil to‘xtash joyi"],
+          ["يَشْعُرُ بِـ", "...ni his qiladi"],
+          ["النَّشْرَةُ الْجَوِّيَّةُ", "Ob-havo bulleteni"],
+          ["دَرَجَةُ الْحَرَارَةِ", "Harorat darajasi"],
+          ["تَحْتَ الصِّفْرِ", "Nol darajadan past"],
+          ["طَوَالَ الْيَوْمِ", "Kun davomida"]
+        ]
+      },
+      {
+        id: 7,
+        title: "7-vahda",
+        arTitle: "السَّفَرُ وَالْمُوَاصَلَاتُ",
+        subtitle: "Sayohat va transport",
+        vocab: [
+          ["وَصَلَ", "Yetib keldi"],
+          ["إِقْلَاعٌ", "Parvoz (samolyotning ko‘tarilishi)"],
+          ["مَطَارٌ", "Aeroport"],
+          ["يُسَافِرُ", "Sayohat qiladi, safar qiladi"],
+          ["هُبُوطٌ", "Qo‘nish, tushish (samolyot)"],
+          ["يَرْكَبُ", "Minadi, chiqadi (transportga)"],
+          ["رُكَّابٌ", "Yo‘lovchilar"],
+          ["مِيزَانٌ", "Tarozi, vazn o‘lchagich"],
+          ["يَسْتَغْرِقُ", "Davom etadi, vaqt oladi"],
+          ["يَخْتِمُ", "Muhrlaydi, shtampani bosadi"],
+          ["تَذْكِرَةٌ", "Chipta, bilet"],
+          ["يَضَعُ", "Qo‘yadi"],
+          ["رِحْلَةٌ", "Sayohat, sayr"],
+          ["مُتَّجِهٌ إِلَى", "...ga yo‘naltirilgan, qarab ketayotgan"]
+        ],
+        phrases: [
+          ["الْخُطُوطُ الْجَوِّيَّةُ", "Havo yo‘llari, aviakompaniya"],
+          ["صَالَةُ الِانْتِظَارِ", "Kutish zali"],
+          ["جَوَازُ السَّفَرِ", "Pasport"],
+          ["عُمْرَةٌ مُتَقَبَّلَةٌ", "Qabul qilingan umra"],
+          ["بَوَّابَةُ الدُّخُولِ", "Kirish darvozasi"],
+          ["مَقْعَدُ الطَّائِرَةِ", "Samolyot o‘rindig‘i"],
+          ["مُوَظَّفُ الْأَمْنِ", "Xavfsizlik xodimi"],
+          ["جِهَازُ التَّفْتِيشِ", "Tekshirish (skanerlash) qurilmasi"]
+        ]
+      },
+      {
+        id: 8,
+        title: "8-vahda",
+        arTitle: "الطَّعَامُ وَالْمَشْرُوبَاتُ",
+        subtitle: "Ovqat va ichimliklar",
+        vocab: [
+          ["مَائِدَةٌ", "Dasturxon, stol"],
+          ["لَذِيذٌ", "Mazali, totli"],
+          ["مَقْلِيٌّ", "Qovurilgan"],
+          ["الْمَشْرُوبَاتُ", "Ichimliklar"],
+          ["أَطْبُخُ", "Pishiraman, ovqat tayyorlayman"],
+          ["مَشْوِيٌّ", "Mangalda pishirilgan, qovurma"],
+          ["الْأُرْزُ", "Guruch"],
+          ["آكُلُ", "Yeyman"],
+          ["مَسْلُوقٌ", "Qaynatilgan"],
+          ["الْحَسَاءُ", "Sho‘rva, sup"],
+          ["أُعِدُّ", "Tayyorlayman"],
+          ["شَبْعَانُ", "To‘q (qornim)"],
+          ["شَطِيرَةٌ", "Sandvich"],
+          ["أَشُمُّ", "Hidlayman"],
+          ["جَائِعٌ", "Och, ochqagan"],
+          ["رَائِحَةٌ", "Hid, atir"],
+          ["أَتَنَاوَلُ", "Iste’mol qilaman, yeyman"],
+          ["فَاصُولِيَا", "Loviya"],
+          ["نَادِلٌ", "Ofitsiant"],
+          ["أُبَدِّلُ", "O‘zgartiraman, almashtiraman"],
+          ["الْفُطُورُ", "Nonushta"],
+          ["الْبَاقِي", "Qolgani, qoldiq"],
+          ["أَضَعُ", "Qo‘yaman"],
+          ["الْغَدَاءُ", "Tushlik"],
+          ["الْحِسَابُ", "Hisob, schyot"],
+          ["نَبَاتِيٌّ", "Vegetarian, o‘simlik mahsuloti"],
+          ["الْعَشَاءُ", "Kechki ovqat"]
+        ],
+        phrases: [
+          ["الشَّطَائِرُ السَّرِيعَةُ", "Fast-food sandvichlar"],
+          ["قَائِمَةُ الطَّعَامِ", "Menyu"],
+          ["وَجْبَةٌ دَسِمَةٌ", "Mazali, yog‘li taom"],
+          ["كَمَا تُحِبُّ", "Yoqtirganingizdek"],
+          ["سَلِمَتْ يَدَاكَ", "Qo‘lingizga sog‘lik (taom uchun minnatdorlik)"],
+          ["بِالْهَنَاءِ وَالشِّفَاءِ", "Yoqimli va shifobaxsh bo‘lsin"]
+        ]
+      },
+      {
+        id: 9,
+        title: "9-vahda",
+        arTitle: "التَّسَوُّقُ",
+        subtitle: "Xarid qilish",
+        vocab: [
+          ["كِيلُو", "Kilogramm"],
+          ["الْبَائِعُ", "Sotuvchi"],
+          ["يَشْتَرِي", "Sotib oladi"],
+          ["طَازَجٌ", "Yangi, yangi-yangi (mahsulot)"],
+          ["الزَّبُونُ", "Mijoz, xaridor"],
+          ["يَبِيعُ", "Sotadi"],
+          ["رَخِيصٌ", "Arzon"],
+          ["بَقَّالٌ", "Baqqol, oziq-ovqat sotuvchisi"],
+          ["أَعْطَى", "Berdi"],
+          ["مَقَاسٌ", "O‘lcham, razmer"],
+          ["جَزَّارٌ", "Qassob"],
+          ["الْقُطْنُ", "Paxta"],
+          ["الصُّوفُ", "Jun"],
+          ["مَتْجَرٌ", "Do‘kon, magazin"]
+        ],
+        phrases: [
+          ["كَمِ الثَّمَنُ؟", "Narxi qancha?"],
+          ["بِالصِّحَّةِ وَالْعَافِيَةِ", "Sog‘lik-salomatlik bilan"],
+          ["لَحْمٌ مَفْرُومٌ", "Qiyma go‘sht"],
+          ["دَفْعُ الْحِسَابِ", "Hisobni to‘lash"],
+          ["لَيْلَةٌ سَعِيدَةٌ", "Xayrli tun"],
+          ["عُلْبَةُ حَلِيبٍ", "Sut qutisi"],
+          ["كِيسُ خُبْزٍ", "Non paketi"],
+          ["قَارُورَةُ مَاءٍ", "Suv shishasi"]
+        ]
+      },
+      {
+        id: 10,
+        title: "10-vahda",
+        arTitle: "شَفَاكَ اللَّهُ",
+        subtitle: "Alloh senga shifo bersin (Sog‘liq)",
+        vocab: [
+          ["يَحْجِزُ", "Band qiladi, rezerv qiladi"],
+          ["أَلَمٌ", "Og‘riq, dard"],
+          ["مَشْغُولٌ", "Band (vaqti)"],
+          ["يَدْفَعُ", "To‘laydi"],
+          ["فُرْشَاةٌ", "Cho‘tka, tish cho‘tkasi"],
+          ["مَرِيضٌ", "Bemor, kasal"],
+          ["يَنْصَحُ", "Maslahat beradi, tavsiya qiladi"],
+          ["مَعْجُونٌ", "Pasta (tish pastasi)"],
+          ["مُمَرِّضَةٌ", "Hamshira"],
+          ["يَبْتَعِدُ", "Uzoqlashadi, qochadi"],
+          ["مُسْتَشْفَى", "Kasalxona"],
+          ["دَوَاءٌ", "Dori"],
+          ["يَسْتَخْدِمُ", "Foydalanadi, ishlatadi"],
+          ["عِيَادَةٌ", "Klinika, qabulxona"],
+          ["حُقْنَةٌ", "Ukol, in’ektsiya"],
+          ["يَفْحَصُ", "Tekshiradi, ko‘rikdan o‘tkazadi"],
+          ["مُلَوَّثٌ", "Ifloslangan, bulgangan"],
+          ["الرَّاحَةُ", "Dam olish, osoyishtalik"],
+          ["اسْتَلْقَى", "Yotdi, cho‘zildi"],
+          ["زِيَارَةٌ", "Tashrif, ziyorat"],
+          ["الْعُنْوَانُ", "Manzil"]
+        ],
+        phrases: [
+          ["فِي أَقْرَبِ وَقْتٍ", "Eng yaqin vaqtda"],
+          ["لَا بَأْسَ عَلَيْكَ", "Sizga zarari yo‘q, tashvishlanmang"],
+          ["تَسَوُّسُ الْأَسْنَانِ", "Tish chirishi, kariyes"],
+          ["سَيَّارَةُ الْإِسْعَافِ", "Tez yordam mashinasi"],
+          ["أَشْعُرُ بِـ", "...ni his qilaman"],
+          ["وَصْفَةٌ طِبِّيَّةٌ", "Dori-darmon retsepti"],
+          ["حَشْوُ الْأَسْنَانِ", "Tish plombasi"],
+          ["حَرَارَةٌ مُرْتَفِعَةٌ", "Yuqori harorat (qizdirgi)"]
+        ]
+      },
+      {
+        id: 11,
+        title: "11-vahda",
+        arTitle: "الْهِوَايَاتُ وَالرِّيَاضَةُ",
+        subtitle: "Sevimli mashg‘ulotlar va sport",
+        vocab: [
+          ["الرِّيَاضَةُ", "Sport"],
+          ["هِوَايَةٌ", "Sevimli mashg‘ulot, hobbi"],
+          ["فَرْدِيَّةٌ", "Yakka, individual"],
+          ["السِّبَاحَةُ", "Suzish"],
+          ["أَنْوَاعٌ", "Turlar"],
+          ["ثُنَائِيَّةٌ", "Juftlik, ikkilik"],
+          ["التَّزَلُّجُ", "Konkida uchish, sirpanchiq sport"],
+          ["النَّادِي", "Klub"],
+          ["جَمَاعِيَّةٌ", "Jamoaviy, guruh bo‘lib"],
+          ["الْعَضَلَاتُ", "Mushaklar"],
+          ["مُسَابَقَةٌ", "Musobaqa, bellashuv"],
+          ["يَزِيدُ", "Ortadi, ko‘payadi"],
+          ["الْمُلَاكَمَةُ", "Boks"],
+          ["حَلُّ الْأَلْغَازِ", "Topishmoqlarni yechish"],
+          ["يُقَوِّي", "Kuchaytiradi, mustahkamlaydi"],
+          ["التَّطْرِيزُ", "Kashtachilik"],
+          ["الْجَرْيُ", "Yugurish"],
+          ["يُمَارِسُ", "Shug‘ullanadi, amalga oshiradi"]
+        ],
+        phrases: [
+          ["بِالنِّسْبَةِ إِلَيَّ", "Menga nisbatan, men uchun"],
+          ["وَقْتُ الْفَرَاغِ", "Bo‘sh vaqt"],
+          ["مَاهِرٌ فِي", "...da mohir"],
+          ["خَاصَّةً", "Ayniqsa"],
+          ["تَنْشِيطُ الْعَقْلِ", "Aqlni jonlantirish"],
+          ["تَرْبِيَةُ الْحَيَوَانَاتِ", "Hayvonlarni boqish"],
+          ["أَلْعَابٌ إِلِكْتُرُونِيَّةٌ", "Elektron o‘yinlar"],
+          ["رِيَاضَةٌ بَدَنِيَّةٌ", "Jismoniy mashqlar, sport"]
+        ]
+      },
+      {
+        id: 12,
+        title: "12-vahda",
+        arTitle: "الْبَرْنَامَجُ الْيَوْمِيُّ",
+        subtitle: "Kunlik dastur",
+        vocab: [
+          ["التَّسَوُّقُ", "Xarid qilish"],
+          ["عَادَةٌ", "Odat"],
+          ["غَالِبًا", "Ko‘pincha, asosan"],
+          ["مَقْهًى", "Kafe"],
+          ["أَتَوَضَّأُ", "Tahorat olaman"],
+          ["أَسْتَيْقِظُ", "Uyg‘onaman"],
+          ["أَحْيَانًا", "Ba’zan"],
+          ["أُنَظِّفُ", "Tozalayman"],
+          ["أَنَامُ", "Uxlayman"],
+          ["يَقْضِي", "O‘tkazadi (vaqtni)"],
+          ["مُسَابَقَةٌ", "Musobaqa, bellashuv"],
+          ["أُرَتِّبُ", "Tartibga solaman, joylashtiraman"],
+          ["أَغْسِلُ", "Yuvaman"],
+          ["يَزِيدُ", "Ortadi, ko‘payadi"],
+          ["أَكْوِي", "Dazmollayman"],
+          ["أُسَاعِدُ", "Yordam beraman"],
+          ["أَغْتَسِلُ", "Cho‘milaman, yuvinaman"],
+          ["أُشَاهِدُ", "Tomosha qilaman, ko‘raman"]
+        ],
+        phrases: [
+          ["شُرُوقُ الشَّمْسِ", "Quyosh chiqishi"],
+          ["كُلَّ يَوْمٍ", "Har kuni"],
+          ["فِي الْخَارِجِ", "Tashqarida"],
+          ["ارْتِدَاءُ الْمَلَابِسِ", "Kiyim kiyish"],
+          ["أُمُورُ الْحَيَاةِ", "Hayot ishlari, kundalik mashg‘ulotlar"],
+          ["عُطْلَةٌ سَعِيدَةٌ", "Xayrli ta’til"]
+        ]
+      }
+    ];
+
+    const WAHDA_DATA = RAW_WAHDAS.map((w) => {
+      const items = [];
+      w.vocab.forEach(([ar, uz], i) => {
+        items.push({ id: `w${w.id}-v${i + 1}`, kind: "Lug‘at", ar, uz }); }); w.phrases.forEach(([ar, uz], i) => { items.push({ id: `w${w.id}-p${i + 1}`, kind: "Ibora / Tarkib", ar, uz }); }); return { ...w, items }; });  const STORAGE_KEY = "manhaj_a1_state_v3"; const defaultState = { unlockedUpTo: 1, passedWahdas: [], view: "home", activeWahdaId: 1, studyIndex: 0, learnedIds: [], quiz: null, reviewQuiz: null };  function loadState() { try { const raw = localStorage.getItem(STORAGE_KEY); if (!raw) return { ...defaultState }; return { ...defaultState, ...JSON.parse(raw) }; } catch { return { ...defaultState }; } }  let state = loadState(); function saveState() { localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); }  function normalizeArabic(str) { return str .replace(/[\u064B-\u065F\u0670\u0640]/g, "") .replace(/[إأآا]/g, "ا") .replace(/ى/g, "ي") .replace(/ة/g, "ه") .replace(/[؟?!.,،؛:×]/g, " ") .replace(/\s+/g, " ") .trim(); }  function shuffle(arr) { const copy = [...arr]; for (let i = copy.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [copy[i], copy[j]] = [copy[j], copy[i]]; } return copy; }  function buildQuestionsForPool(pool, wahdaIdForIcon = 1, maxCount = null) { const chosenPool = maxCount ? shuffle(pool).slice(0, Math.min(maxCount, pool.length)) : shuffle(pool); const questions = [];  chosenPool.forEach((item, idx) => { const mode = idx \% 3; const others = shuffle(pool.filter((x) => x.id !== item.id)).slice(0, 3);  if (mode === 0) { questions.push({ type: "write_ar", badge: "Manhaj A1 • Rasmga qarab arabchasini yozing", prompt: `«${item.uz}» ma’nosiga mos arabcha so‘z/iborani yozing`,
+            wahdaId: wahdaIdForIcon,
+            kind: item.kind,
+            targetItem: item,
+            answered: false,
+            isCorrect: false,
+            userAnswer: ""
+          });
+        } else if (mode === 1) {
+          questions.push({
+            type: "ar_to_uz",
+            badge: "Manhaj A1 • Arabchadan o‘zbekchaga tarjima",
+            prompt: item.ar,
+            isArabicPrompt: true,
+            options: shuffle([item.uz, ...others.map((o) => o.uz)]),
+            correctAnswer: item.uz,
+            targetItem: item,
+            answered: false,
+            isCorrect: false,
+            picked: null
+          });
+        } else {
+          questions.push({
+            type: "uz_to_ar",
+            badge: "Manhaj A1 • O‘zbekchadan arabchaga ulash",
+            prompt: `«${item.uz}» ga mos arabchani tanlang`,
+            options: shuffle([item.ar, ...others.map((o) => o.ar)]),
+            correctAnswer: item.ar,
+            targetItem: item,
+            answered: false,
+            isCorrect: false,
+            picked: null
+          });
+        }
+      });
+
+      if (pool.length >= 4) {
+        const pairSample = shuffle(pool).slice(0, 4);
+        questions.push({
+          type: "match",
+          badge: "Manhaj A1 • So‘zlarni bir-biriga bog‘lang",
+          prompt: "Chapdagi arabcha va o‘ngdagi o‘zbekcha tarjimalarni juftlang",
+          pairs: pairSample.map((p, i) => ({ id: i, ar: p.ar, uz: p.uz })),
+          leftOrder: shuffle(pairSample.map((p, i) => ({ id: i, label: p.ar }))),
+          rightOrder: shuffle(pairSample.map((p, i) => ({ id: i, label: p.uz }))),
+          selectedLeft: null,
+          matchedIds: [],
+          mistakes: 0,
+          answered: false,
+          isCorrect: false
+        });
+      }
+
+      return questions;
+    }
+
+    function startWahdaQuiz(wahdaId) {
+      const wahda = WAHDA_DATA.find((w) => w.id === wahdaId);
+      if (!wahda) return;
+      state.view = "quiz";
+      state.activeWahdaId = wahdaId;
+      state.quiz = {
+        wahdaId,
+        questions: buildQuestionsForPool(wahda.items, wahdaId),
+        current: 0,
+        correctCount: 0,
+        finished: false
+      };
+      saveState();
+      render();
+    }
+
+    function startAllWahdasReview() {
+      const allItems = WAHDA_DATA.flatMap((w) => w.items);
+      state.view = "review";
+      state.reviewQuiz = {
+        questions: buildQuestionsForPool(allItems, 12, 20),
+        current: 0,
+        correctCount: 0,
+        finished: false
+      };
+      saveState();
+      render();
+    }
+
+    const appEl = document.getElementById("app");
+
+    function render() {
+      const soundLabel = Sound.isEnabled() ? "🔊 Ovoz: Yoqilgan" : "🔇 Ovoz: O‘chirilgan";
+
+      appEl.innerHTML = `
+        <div class="topbar">
+          <div class="brand">
+            <h1>Manhaj A1</h1>
+            <p>12 vahda • 80%+ natija bilan keyingi vahda ochiladi</p>
+          </div>
+          <div class="controls-top">
+            <button class="btn-ghost" id="toggleSoundBtn">${soundLabel}</button>${state.view !== "home" ? `<button class="btn-ghost" id="goHomeBtn">← Vahdalar</button>` : ""}
+          </div>
+        </div>
+        <div id="content"></div>
+      `;
+
+      document.getElementById("toggleSoundBtn").onclick = () => {
+        Sound.toggle();
+        Sound.click();
+        render();
+      };
+
+      const goHomeBtn = document.getElementById("goHomeBtn");
+      if (goHomeBtn) {
+        goHomeBtn.onclick = () => {
+          Sound.click();
+          state.view = "home";
+          saveState();
+          render();
+        };
+      }
+
+      if (state.view === "home") renderHome();
+      else if (state.view === "study") renderStudy();
+      else if (state.view === "quiz") renderQuizSession(state.quiz, false);
+      else if (state.view === "review") renderQuizSession(state.reviewQuiz, true);
+    }
+
+    function renderHome() {
+      const content = document.getElementById("content");
+      const totalAll = WAHDA_DATA.reduce((sum, w) => sum + w.items.length, 0);
+
+      const cardsHtml = WAHDA_DATA.map((w) => {
+        const isUnlocked = w.id <= state.unlockedUpTo;
+        const isCompleted = state.passedWahdas.includes(w.id);
+
+        let badgeHtml = `<span class="badge badge-lock">🔒 Qulflangan</span>`;
+        if (isCompleted) badgeHtml = `<span class="badge badge-done">✓ Yakunlangan</span>`;
+        else if (isUnlocked) badgeHtml = `<span class="badge badge-open">▶ Ochiq</span>`;
+
+        return `
+          <button
+            class="wahda-card ${isUnlocked ? "unlocked" : "locked"} ${isCompleted ? "completed" : ""}"
+            data-wid="${w.id}"
+            ${!isUnlocked ? "disabled" : ""}
+          >
+            <div>
+              <div class="wahda-num">${w.title}</div>
+              <div class="wahda-ar-title">${w.arTitle}</div>
+              <div class="wahda-sub">${w.subtitle}</div>
+            </div>
+            <div>
+              <div style="font-size:0.8rem; color:var(--muted); margin-bottom:8px;">
+                ${w.items.length} ta lug‘at va tarkib
+              </div>
+              ${badgeHtml}
+            </div>
+          </button>
+        `;
+      }).join("");
+
+      content.innerHTML = `
+        <div class="wahda-grid">${cardsHtml}</div>
+        <div class="review-box">
+          <div>
+            <h2 style="font-size:1.15rem; margin-bottom:4px;">🔁 Manhaj A1 — Takror test</h2>
+            <p style="color:var(--muted); font-size:0.9rem;">
+              Barcha 12 vahdadagi ${totalAll} ta lug‘at va iboralar ichidan aralashtirib umumiy test ishlang.
+            </p>
+          </div>
+          <button class="btn-gold" id="startReviewBtn">Takror test</button>
+        </div>
+      `;
+
+      document.querySelectorAll(".wahda-card.unlocked").forEach((btn) => {
+        btn.onclick = () => {
+          Sound.click();
+          const wid = Number(btn.dataset.wid);
+          state.view = "study";
+          state.activeWahdaId = wid;
+          state.studyIndex = 0;
+          saveState();
+          render();
+        };
+      });
+
+      document.getElementById("startReviewBtn").onclick = () => {
+        Sound.click();
+        startAllWahdasReview();
+      };
+    }
+
+    function renderStudy() {
+      const wahda = WAHDA_DATA.find((w) => w.id === state.activeWahdaId);
+      const items = wahda.items;
+      const idx = Math.min(state.studyIndex, items.length - 1);
+      const item = items[idx];
+      const isLearned = state.learnedIds.includes(item.id);
+      const pct = Math.round(((idx + 1) / items.length) * 100);
+      const isLast = idx === items.length - 1;
+
+      const content = document.getElementById("content");
+      content.innerHTML = `
+        <div class="panel">
+          <div class="progress-wrap">
+            <div class="progress-meta">
+              <span>Manhaj A1 • ${wahda.title} —${wah
